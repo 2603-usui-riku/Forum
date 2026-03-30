@@ -54,6 +54,25 @@ public class ForumController {
     }
 
     /*
+     * 新規投稿画面表示
+     */
+    @GetMapping("/{id}/edit")
+    public ModelAndView editContent(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+
+        // form用の空のentityを準備
+        ReportForm report = reportService.findReport(id);
+
+        // 画面遷移先を指定
+        mav.setViewName("/edit");
+
+        // 準備した空のFormを保管
+        mav.addObject("formModel", report);
+
+        return mav;
+    }
+
+    /*
      * 新規投稿処理
      */
     @PostMapping("/add")
@@ -66,9 +85,20 @@ public class ForumController {
     }
 
     /*
+     * 投稿編集処理
+     */
+    @PutMapping("/{id}/update")
+    public ModelAndView editContent(@PathVariable Integer id, @ModelAttribute("formModel") ReportForm report) {
+        report.setId(id);
+        reportService.saveReport(report);
+
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
      * 投稿削除処理
      */
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ModelAndView deleteContent(@PathVariable Integer id) {
         reportService.deleteReport(id);
 

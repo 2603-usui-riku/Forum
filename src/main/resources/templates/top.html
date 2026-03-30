@@ -24,7 +24,11 @@
         </div>
 
         <div class="buttons">
-            <form th:action="@{/delete/{id}(id=${content.id})}" th:method="delete">
+            <a th:href="@{/{id}/edit(id=${content.id})}" class="edit-button">
+                編集
+            </a>
+
+            <form th:action="@{/{id}/delete(id=${content.id})}" th:method="delete">
                 <button class="delete-button" type="submit">
                     削除
                 </button>

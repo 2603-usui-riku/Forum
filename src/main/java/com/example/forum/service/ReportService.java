@@ -25,6 +25,17 @@ public class ReportService {
     }
 
     /*
+     * レコード一件取得処理
+     */
+    public ReportForm findReport(Integer id) {
+        List<Report> results = new ArrayList<>();
+        results.add(reportRepository.findById(id).orElse(null));
+        List<ReportForm> reports = setReportForm(results);
+
+        return reports.get(0);
+    }
+
+    /*
      * DBから取得したデータをFormに設定
      */
     private List<ReportForm> setReportForm(List<Report> results) {
