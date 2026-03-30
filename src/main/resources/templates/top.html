@@ -22,6 +22,14 @@
         <div class="text">
             投稿 : <span th:text="${content.content}"/>
         </div>
+
+        <div class="buttons">
+            <form th:action="@{/delete/{id}(id=${content.id})}" th:method="delete">
+                <button class="delete-button" type="submit">
+                    削除
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 </body>

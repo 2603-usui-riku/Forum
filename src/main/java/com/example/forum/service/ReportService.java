@@ -59,4 +59,8 @@ public class ReportService {
 
         return report;
     }
+
+    public void deleteReport(Integer id) {
+        reportRepository.deleteById(id);
+    }
 }
