@@ -13,7 +13,7 @@
 </div>
 <div class="main-contents">
     <a href="/new">
-        <button class="new-button" type="button">新規投稿</button>
+        <button class="btn new-btn" type="button">新規投稿</button>
     </a>
     <div class="message-icon" th:each="content : ${contents}">
         <div>
@@ -24,12 +24,12 @@
         </div>
 
         <div class="buttons">
-            <a th:href="@{/{id}/edit(id=${content.id})}" class="edit-button">
+            <a th:href="@{/{id}/edit(id=${content.id})}" class="small-btn edit-btn">
                 編集
             </a>
 
             <form th:action="@{/{id}/delete(id=${content.id})}" th:method="delete">
-                <button class="delete-button" type="submit">
+                <button class="small-btn delete-btn" type="submit">
                     削除
                 </button>
             </form>
