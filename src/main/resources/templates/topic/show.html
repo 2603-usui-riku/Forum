@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/common.css}" rel="styleSheet">
+    <link th:href="@{/css/show.css}" rel="styleSheet">
+    <title>匿名掲示板 - スレッド</title>
+</head>
+
+<body>
+<div th:replace="~{common/fragments :: header-menu('スレッド')}"></div>
+
+<div class="main">
+    <div class="main-inner">
+        <div class="topic-title-wrap">
+            <span class="topic-title" th:text="${topic.title}"></span>
+        </div>
+
+        <div class="posts-wrap">
+
+            <section class="post-form">
+                <div class="post-form-title">
+                    書き込む
+                </div>
+
+                <form th:action="@{/{slug}/topic/{topicId}/add(slug=${slug}, topicId=${topic.id})}" th:object="${postRequest}" method="post">
+                    <div>
+                        <label for="content">投稿内容</label>
+                        <textarea id="content" th:field="*{content}" placeholder=""></textarea>
+                        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color:red;"></p>
+                    </div>
+                    <button type="submit">投稿</button>
+                </form>
+            </section>
+
+            <div class="posts">
+                    <div class="topic" th:each="post: ${postPage.content}">
+                        <div>
+                            <span class="post-num" th:text="${post.postNum} + '．'">( 123 )</span>
+                            <span class="post-name">名無しさん</span>
+                            <span class="post-created-at" th:text="${post.createdAtStr}"></span>
+                            <span class="post-edited" th:if="${post.isEdited}">(編集済み)</span>
+                        </div>
+
+                        <p class="post-content" th:text="${post.content}">content</p>
+
+                        <a th:href="@{/{slug}/topic/{topicId}/{id}/edit(slug=${slug}, topicId=${topic.id}, id=${post.id})}">
+                            編集
+                        </a>
+                        <a th:href="@{/{slug}/topic/{topicId}/{id}/delete(slug=${slug}, topicId=${topic.id}, id=${post.id})}">
+                            削除
+                        </a>
+                    </div>
+
+                <div class="pagination" th:if="${postPage.totalPages > 1}">
+                    <a th:if="${postPage.hasPrevious()}"
+                       th:href="@{/{slug}(slug=${slug}, page=${postPage.number - 1})}">
+                        前へ
+                    </a>
+
+                    <span th:each="i : ${#numbers.sequence(0, postPage.totalPages - 1)}">
+                        <a th:href="@{/{slug}/topic/{topicId}(slug=${slug}, topicId=${topic.id}, page=${i})}" th:text="${i + 1}"
+                           th:classappend="${i == postPage.number} ? 'active' : ''"></a>
+                    </span>
+
+                    <a th:if="${postPage.hasNext()}"
+                       th:href="@{/{slug}(slug=${slug}, page=${postPage.number + 1})}">
+                        次へ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/fragments :: footer-copy}"></div>
+</body>
+
+</html>

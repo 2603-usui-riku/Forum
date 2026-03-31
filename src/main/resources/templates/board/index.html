@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/common.css}" rel="styleSheet">
+    <link th:href="@{/css/index.css}" rel="styleSheet">
+    <title>匿名掲示板 - 板</title>
+</head>
+
+<body>
+<div th:replace="~{common/fragments :: header-menu('トップ')}"></div>
+
+<div class="main">
+    <div class="main-inner">
+        <div>
+            ようこそ、匿名掲示板へ
+        </div>
+
+        <div class="boards-wrap">
+            <div>
+                板一覧
+            </div>
+
+            <div class="boards">
+                <div class="board" th:each="board: ${boards}">
+                    <a class="board-name" th:href="@{/{slug}(slug=${board.slug})}">
+                        <span th:text="${board.name}">板の名前</span>
+                    </a>
+
+                    <div class="board-description">
+                        <p th:text="${board.description}">板の説明</p>
+                    </div>
+
+                    <div class="topics">
+                        <ul>
+                            <li class="topic" th:each="topic: ${board.topTopics}">
+                                <a th:href="@{/{slug}/topic/{id}(slug=${board.slug},id=${topic.id})}">
+                                    <span th:text="${topic.title}">スレッドのタイトル</span>
+                                    <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p th:if="${#lists.isEmpty(board.topTopics)}" class="empty-msg">まだスレッドがありません</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/fragments :: footer-copy}"></div>
+</body>
+
+</html>

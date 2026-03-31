@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/common.css}" rel="styleSheet">
+    <link th:href="@{/css/show.css}" rel="styleSheet">
+    <title>匿名掲示板 - トップ</title>
+</head>
+
+<body>
+<div th:replace="~{common/fragments :: header-menu('スレッド一覧')}"></div>
+
+<div class="main">
+    <div class="main-inner">
+        <div class="board-title-wrap">
+            <span class="board-title" th:text="${board.name}"></span>
+        </div>
+
+        <div class="boards-wrap">
+            <div class="new-topic-title">
+                新着スレッド
+            </div>
+            <div class="new-topics">
+                <ul>
+                    <li class="topic" th:each="topic: ${newTopics}">
+                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
+                            <span class="topic-title" th:text="${topic.title}">スレッドのタイトル</span>
+                        </a>
+
+                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
+                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
+
+                        <form th:action="@{/{slug}/topic/{topicId}/delete(slug=${slug}, topicId=${topic.id})}" th:method="delete">
+                            <button class="delete-btn" type="submit">削除</button>
+                        </form>
+                    </li>
+                </ul>
+
+                <p th:if="${#lists.isEmpty(newTopics)}" class="empty-msg">まだスレッドがありません</p>
+            </div>
+
+            <div class="popular-topic-title">
+                人気スレッド
+            </div>
+            <div class="popular-topics">
+                <ul>
+                    <li class="topic" th:each="topic: ${hotTopics}">
+                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
+                            <span th:text="${topic.title}">スレッドのタイトル</span>
+                        </a>
+
+                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
+                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
+                    </li>
+                </ul>
+
+                <p th:if="${#lists.isEmpty(hotTopics)}" class="empty-msg">まだスレッドがありません</p>
+            </div>
+
+            <div class="topics-title">
+                スレッド一覧
+            </div>
+            <div class="topics">
+                <p th:if="${#lists.isEmpty(topicPage.getContent())}" class="empty-msg">まだスレッドがありません</p>
+
+                <ul>
+                    <li class="topic" th:each="topic: ${topicPage.content}">
+                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
+                            <span th:text="${topic.title}">スレッドのタイトル</span>
+                        </a>
+                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
+                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
+                    </li>
+                </ul>
+
+                <div class="pagination" th:if="${topicPage.totalPages > 1}">
+                    <a th:if="${topicPage.hasPrevious()}"
+                       th:href="@{/{slug}(slug=${slug}, page=${topicPage.number - 1})}">
+                        前へ
+                    </a>
+
+                    <span th:each="i : ${#numbers.sequence(0, topicPage.totalPages - 1)}">
+                        <a th:href="@{/{slug}(slug=${slug}, page=${i})}" th:text="${i + 1}"
+                           th:classappend="${i == topicPage.number} ? 'active' : ''"></a>
+                    </span>
+
+                    <a th:if="${topicPage.hasNext()}"
+                       th:href="@{/{slug}(slug=${slug}, page=${topicPage.number + 1})}">
+                        次へ
+                    </a>
+                </div>
+            </div>
+
+            <section class="post-form">
+                <div class="post-form-title">
+                    新しくスレッドを立てる
+                </div>
+
+                <form th:action="@{/{slug}/topic/add(slug=${slug})}" th:object="${topicRequest}" method="post">
+                    <div>
+                        <label for="title">タイトル</label>
+                        <input id="title" type="text" th:field="*{title}" placeholder="スレッドタイトル（必須）">
+                        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></p>
+                    </div>
+
+                    <div>
+                        <label>ジャンル</label>
+                        <p th:text="${board.name}"></p>
+                    </div>
+
+                    <div>
+                        <label for="content">投稿内容</label>
+                        <textarea id="content" th:field="*{content}" placeholder="最初の書き込み文（必須）"></textarea>
+                        <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="color:red;"></p>
+                    </div>
+                    <button type="submit">新規スレッド作成</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/fragments :: footer-copy}"></div>
+</body>
+
+</html>

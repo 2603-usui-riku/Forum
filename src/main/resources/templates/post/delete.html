@@ -4,24 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
-    <title>投稿編集</title>
+    <title>新規投稿</title>
 </head>
 
 <body>
 <div class="header-contents">
-    <h2>投稿編集</h2>
+    <h2>新規投稿</h2>
 </div>
 <div class="main-contents">
-    <form th:method="put" th:action="@{/{id}/update(id=${formModel.id})}" th:object="${formModel}">
+    <form method="post" action="/add" th:object="${postRequest}">
         <div class="form-area">
-            <label>編集内容</label>
-            <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200"/></textarea>
-            <input type="submit" value="完了"/>
+            <label>投稿内容</label>
+            <input type="submit" value="投稿"/>
         </div>
     </form>
 </div>
 <div class="footer-contents">
-    <form action="/">
+    <form action="/static">
         <input type="submit" value="戻る"/>
     </form>
 </div>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<body>
+
+<header class="header" th:fragment="header-menu(pageTitle)">
+    <nav class="header-nav">
+        <a class="header-title" href="/">匿名掲示板</a>
+        <div th:text="${pageTitle}"></div>
+    </nav>
+    <nav class="board-nav">
+        <a class="nav-link" th:each="board: ${boards}" th:href="@{/{slug}(slug=${board.slug})}">
+            <span th:text="${board.name}"></span>
+        </a>
+    </nav>
+</header>
+
+<footer th:fragment="footer-copy">
+    <p>&copy; 2026 Riku Usui</p>
+</footer>
+
+</body>
+</html>
