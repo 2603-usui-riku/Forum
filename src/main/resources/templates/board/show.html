@@ -22,57 +22,22 @@
                 新着スレッド
             </div>
             <div class="new-topics">
-                <ul>
-                    <li class="topic" th:each="topic: ${newTopics}">
-                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
-                            <span class="topic-title" th:text="${topic.title}">スレッドのタイトル</span>
-                        </a>
-
-                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
-                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
-
-                        <form th:action="@{/{slug}/topic/{topicId}/delete(slug=${slug}, topicId=${topic.id})}" th:method="delete">
-                            <button class="delete-btn" type="submit">削除</button>
-                        </form>
-                    </li>
-                </ul>
-
-                <p th:if="${#lists.isEmpty(newTopics)}" class="empty-msg">まだスレッドがありません</p>
+                <div th:replace="~{common/fragments::topic-list(${newTopics}, ${board.slug})}"></div>
             </div>
 
             <div class="popular-topic-title">
                 人気スレッド
             </div>
             <div class="popular-topics">
-                <ul>
-                    <li class="topic" th:each="topic: ${hotTopics}">
-                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
-                            <span th:text="${topic.title}">スレッドのタイトル</span>
-                        </a>
-
-                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
-                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
-                    </li>
-                </ul>
-
-                <p th:if="${#lists.isEmpty(hotTopics)}" class="empty-msg">まだスレッドがありません</p>
+                <div th:replace="~{common/fragments::topic-list(${hotTopics}, ${board.slug})}"></div>
             </div>
 
             <div class="topics-title">
                 スレッド一覧
             </div>
             <div class="topics">
-                <p th:if="${#lists.isEmpty(topicPage.getContent())}" class="empty-msg">まだスレッドがありません</p>
+                <div th:replace="~{common/fragments::topic-list(${topicPage.content}, ${board.slug})}"></div>
 
-                <ul>
-                    <li class="topic" th:each="topic: ${topicPage.content}">
-                        <a th:href="@{/{slug}/topic/{id}(slug=${board.slug}, id=${topic.id})}">
-                            <span th:text="${topic.title}">スレッドのタイトル</span>
-                        </a>
-                        <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 123 )</span>
-                        <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
-                    </li>
-                </ul>
 
                 <div class="pagination" th:if="${topicPage.totalPages > 1}">
                     <a th:if="${topicPage.hasPrevious()}"

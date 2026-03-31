@@ -14,6 +14,25 @@
     </nav>
 </header>
 
+
+<div th:fragment="topic-list(topics, slug)">
+    <ul>
+        <li class="topic" th:each="topic : ${topics}">
+            <a th:href="@{/{s}/topic/{id}(s=${slug}, id=${topic.id})}">
+                <span th:text="${topic.title}">スレッドのタイトル</span>
+            </a>
+            <span class="post-count" th:text="'( ' + ${topic.postCount} + ' )'">( 0 )</span>
+            <span>最終投稿：</span>
+            <span class="topic-last-post" th:text="${topic.lastPostAtStr}"></span>
+
+            <form th:action="@{/{s}/topic/{topicId}/delete(s=${slug}, topicId=${topic.id})}" th:method="delete">
+                <button class="delete-btn" type="submit">削除</button>
+            </form>
+        </li>
+    </ul>
+    <p th:if="${#lists.isEmpty(topics)}" class="empty-msg">まだスレッドがありません</p>
+</div>
+
 <footer th:fragment="footer-copy">
     <p>&copy; 2026 Riku Usui</p>
 </footer>

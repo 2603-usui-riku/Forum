@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/style.css}" rel="styleSheet">
-    <title>新規投稿</title>
+    <link th:href="@{/css/common.css}" rel="styleSheet">
+    <title>投稿削除</title>
 </head>
 
 <body>
-<div class="header-contents">
-    <h2>新規投稿</h2>
-</div>
-<div class="main-contents">
-    <form method="post" action="/add" th:object="${postRequest}">
-        <div class="form-area">
-            <label>投稿内容</label>
-            <input type="submit" value="投稿"/>
+<div th:replace="~{common/fragments :: header-menu('スレッド')}"></div>
+
+<div class="main">
+    <div class="main-wrapper">
+        <div class="delete-title">
+            <div>以下の投稿を削除します。本当によろしいですか？</div>
         </div>
-    </form>
+
+        <div class="post">
+            <div th:text="${post.content}"></div>
+            <div th:text="${post.createdAtStr}"></div>
+        </div>
+
+        <form th:method="delete" th:action="@{/{slug}/topic/{topicId}/{id}/delete(slug=${slug}, topicId=${topicId}, id=${post.id})}">
+            <input type="submit" value="削除"/>
+        </form>
+        <form action="/static">
+            <input type="submit" value="戻る"/>
+        </form>
+    </div>
 </div>
-<div class="footer-contents">
-    <form action="/static">
-        <input type="submit" value="戻る"/>
-    </form>
-</div>
+
+<div th:replace="~{common/fragments :: footer-copy}"></div>
 </body>
 
 </html>

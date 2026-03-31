@@ -43,7 +43,8 @@
                             <span class="post-edited" th:if="${post.isEdited}">(編集済み)</span>
                         </div>
 
-                        <p class="post-content" th:text="${post.content}">content</p>
+                        <p class="post-content" th:if="${post.isDeleted}">（ 削除された投稿です ）</p>
+                        <p class="post-content" th:unless="${post.isDeleted}" th:text="${post.content}">content</p>
 
                         <a th:href="@{/{slug}/topic/{topicId}/{id}/edit(slug=${slug}, topicId=${topic.id}, id=${post.id})}">
                             編集

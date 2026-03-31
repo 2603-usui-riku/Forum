@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <link th:href="@{/css/common.css}" rel="styleSheet">
     <title>投稿編集</title>
 </head>
 
@@ -21,8 +21,8 @@
 
         <form th:method="put" th:action="@{/{slug}/topic/{topicId}/{id}/edit(slug=${slug}, topicId=${topicId}, id=${post.id})}" th:object="${postRequest}">
             <div class="form-area">
-                <label>編集内容</label>
-                <textarea class="tweet-box" th:field="*{content}"></textarea>
+                <label for="content">編集内容</label>
+                <textarea id="content" class="edit-content" th:field="*{content}"></textarea>
                 <input type="submit" value="更新"/>
             </div>
         </form>
